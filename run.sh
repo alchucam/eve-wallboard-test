@@ -13,8 +13,6 @@ fi
 
 echo "Building application..."
 echo Y | yarn build
-# npm install -g serve
 
 echo "Starting application..."
-# serve -s /app/build -l tcp://0.0.0.0:3000
 yarn start 
