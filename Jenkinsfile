@@ -22,6 +22,10 @@ pipeline {
       }
     }
     stage('Build Image') {
+      environment {
+        DOCKER_HOST="tcp://swarm.phx.connexta.com:2375"
+        DOCKER_API_VERSION=1.23
+      }
       steps {
         sh 'make image GIT_BRANCH=' + env.BRANCH_NAME
       }

@@ -15,7 +15,6 @@ help: ## Display help.
 
 .PHONY: image
 image: ## Build docker image
-	@export DOCKER_API_VERSION=1.23
 	@echo "\nBuilding image: $(BUILD_TAG)\n"
 	@docker build --pull -t $(BUILD_TAG) .
 
