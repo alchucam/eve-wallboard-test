@@ -7,11 +7,7 @@ pipeline {
     disableConcurrentBuilds()
     timestamps()
   }
-  environment {
-    PATH="${tool 'docker-latest'}/bin:$PATH"
-    DOCKER_HOST="tcp://swarm.phx.connexta.com:2375"
-    DOCKER_API_VERSION=1.23
-    }
+  environment { PATH="${tool 'docker-latest'}/bin:$PATH" }
   triggers {
     /*
         Restrict nightly builds to master branch, all others will be built on change only.
@@ -27,6 +23,7 @@ pipeline {
     }
     stage('Build Image') {
       steps {
+        sh 'export DOCKER_API_VERSION=1.23'
         sh 'make image GIT_BRANCH=' + env.BRANCH_NAME
       }
     }
