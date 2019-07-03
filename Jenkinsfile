@@ -22,11 +22,7 @@ pipeline {
       }
     }
     stage('Build Image') {
-      environment {
-        DOCKER_API_VERSION=1.23
-      }
       steps {
-        sh 'echo Docker --version'
         sh 'make image GIT_BRANCH=' + env.BRANCH_NAME
       }
     }
