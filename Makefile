@@ -1,7 +1,7 @@
 REGISTRY=registry.phx.connexta.com:5000
 IMAGE_OWNER=devops
 IMAGE_NAME=eve-wallboard-testing
-GIT_BRANCH:=$(shell git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,' 2>/dev/null)
+GIT_BRANCH:=$(shell git symbolic-ref master | sed -e 's,.*/\(.*\),\1,' 2>/dev/null)
 ifneq (${GIT_BRANCH}, master)
 	IMAGE_TAG=${GIT_BRANCH}
 else
@@ -15,7 +15,6 @@ help: ## Display help.
 
 .PHONY: image
 image: ## Build docker image
-	@export DOCKER_API_VERSION=1.24
 	@echo "\nBuilding image: $(BUILD_TAG)\n"
 	@docker build --pull -t $(BUILD_TAG) .
 
