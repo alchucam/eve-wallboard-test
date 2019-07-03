@@ -23,7 +23,6 @@ pipeline {
     }
     stage('Build Image') {
       steps {
-        sh 'export DOCKER_API_VERSION=1.23'
         sh 'make image GIT_BRANCH=' + env.BRANCH_NAME
       }
     }
