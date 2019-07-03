@@ -23,4 +23,5 @@ image: ## Build docker image
 .PHONY: push
 push: ## Push docker image
 	@echo "\nPushing image: $(BUILD_TAG)\n"
-	@docker push $(BUILD_TAG)
+	@export DOCKER_API_VERSION=1.23
+	@env DOCKER_API_VERSION=1.23 docker push $(BUILD_TAG)
