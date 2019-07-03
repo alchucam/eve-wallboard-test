@@ -7,7 +7,11 @@ pipeline {
     disableConcurrentBuilds()
     timestamps()
   }
-  environment { PATH="${tool 'docker-latest'}/bin:$PATH" }
+  environment {
+    PATH="${tool 'docker-latest'}/bin:$PATH"
+    DOCKER_HOST="tcp://swarm.phx.connexta.com:2375"
+    DOCKER_API_VERSION=1.23
+    }
   triggers {
     /*
         Restrict nightly builds to master branch, all others will be built on change only.
