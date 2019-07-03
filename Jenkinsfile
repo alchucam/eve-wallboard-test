@@ -51,7 +51,7 @@ pipeline {
         }
       }
       steps {
-        sh 'docker rm -f $(docker ps --format "{{.ID}}:{{.Image}}" | grep registry.phx.connexta.com:5000/devops/eve-wallboard | awk -F ":" \'{print $1}\')'
+        sh 'docker rm -f $(docker ps --format "{{.ID}}:{{.Image}}" | grep registry.phx.connexta.com:5000/devops/eve-wallboard-testing | awk -F ":" \'{print $1}\')'
       }
     }
   }
@@ -59,7 +59,7 @@ pipeline {
     success {
       script {
         if (env.BRANCH_NAME == 'master') {
-          slackSend channel: '#cmp-build-bots', color: 'good', message: "Wallboard Build Successful! :jenkins-party: \nUpdated :docker: deployment available at registry.phx.connexta.com:5000/devops/eve-wallboard:latest Visit: ${RUN_DISPLAY_URL} and bask in the devops glory!"
+          slackSend channel: '#cmp-build-bots', color: 'good', message: "Wallboard Build Successful! :jenkins-party: \nUpdated :docker: deployment available at registry.phx.connexta.com:5000/devops/eve-wallboard-testing:latest Visit: ${RUN_DISPLAY_URL} and bask in the devops glory!"
         } else {
           slackSend channel: '#cmp-build-bots', color: 'good', message: "Awesome! '${JOB_NAME} [#${BUILD_NUMBER}]' built successfully :jenkins-party:"
         }
