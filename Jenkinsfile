@@ -22,6 +22,12 @@ pipeline {
       }
     }
     stage('Build Image') {
+      when {
+        allOf {
+          expression { env.CHANGE_ID == null }
+          expression { env.BRANCH_NAME == "master" || "DEV" }
+        }
+      }
       steps {
         withCredentials([
           string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_TOKEN'),
@@ -31,22 +37,11 @@ pipeline {
         }
       }
     }
-    stage('Development'){
-      when {
-        allOf {
-          expression { env.CHANGE_ID == null }
-          expression { env.BRANCH_NAME == "DEV" }
-        }
-      }
-      steps {
-        sh 'make push GIT_BRANCH=' + env.BRANCH_NAME
-      }
-    }
     stage('Push Image') {
       when {
         allOf {
           expression { env.CHANGE_ID == null }
-          expression { env.BRANCH_NAME == "master" }
+          expression { env.BRANCH_NAME == "master" || "DEV" }
         }
       }
       steps {
@@ -63,7 +58,7 @@ pipeline {
       when {
         allOf {
           expression { env.CHANGE_ID == null }
-          expression { env.BRANCH_NAME == "master" }
+          expression { env.BRANCH_NAME == "master" || "DEV" }
         }
       }
       steps {
