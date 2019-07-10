@@ -8,7 +8,8 @@ IMAGE_NAME=eve-wallboard-testing
 # else
 # 	IMAGE_TAG=latest
 # endif
-BUILD_TAG:=$(REGISTRY)/$(IMAGE_OWNER)/$(IMAGE_NAME) #:$(IMAGE_TAG)
+BUILD_TAG:=$(REGISTRY)/$(IMAGE_OWNER)/$(IMAGE_NAME)
+#:$(IMAGE_TAG)
 
 PHONY: help
 help: ## Display help.
