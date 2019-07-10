@@ -27,7 +27,7 @@ pipeline {
           string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_TOKEN'),
           string(credentialsId: 'SLACK_CHANNEL', variable: 'SLACK_CHANNEL')
         ]) {
-          sh 'make image SLACK_TOKEN=${SLACK_TOKEN} SLACK_CHANNEL=${SLACK_CHANNEL}'
+          sh 'make image SLACK_TOKEN=${SLACK_TOKEN} SLACK_CHANNEL=${SLACK_CHANNEL} GIT_BRANCH=' + env.BRANCH_NAME
         }
       }
     }
@@ -39,7 +39,7 @@ pipeline {
         }
       }
       steps {
-        sh 'make push'
+        sh 'make push GIT_BRANCH=' + env.BRANCH_NAME
       }
     }
     stage('Push Image') {
@@ -50,7 +50,7 @@ pipeline {
         }
       }
       steps {
-        sh 'make push'
+        sh 'make push GIT_BRANCH=' + env.BRANCH_NAME
       }
     }
     // The following stage doesn't actually re-deploy the marathon service, but actually kills the existing docker container
