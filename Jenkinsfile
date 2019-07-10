@@ -49,7 +49,7 @@ pipeline {
       }
     }
     // The following stage doesn't actually re-deploy the marathon service, but actually kills the existing docker container
-    // that is tied to it, so that marathon reschedules it. This is to get around the annoying dc/os auth issues
+    // that is tied to it, so that marathon reschedules it. This is to get around the annoying dc/os auth issues 
     stage('Deploy Marathon Service') {
       environment {
         DOCKER_HOST="tcp://swarm.phx.connexta.com:2375"
