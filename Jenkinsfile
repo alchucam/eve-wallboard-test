@@ -23,7 +23,23 @@ pipeline {
     }
     stage('Build Image') {
       steps {
-        sh 'make image GIT_BRANCH=' + env.BRANCH_NAME
+        withCredentials([
+          string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_TOKEN'),
+          string(credentialsId: 'SLACK_CHANNEL', variable: 'SLACK_CHANNEL')
+        ]) {
+          sh 'make image SLACK_TOKEN=${SLACK_TOKEN} SLACK_CHANNEL=${SLACK_CHANNEL}'
+        }
+      }
+    }
+    stage('Development'){
+      when {
+        allOf {
+          expression { env.CHANGE_ID == null }
+          expression { env.BRANCH_NAME == "DEV" }
+        }
+      }
+      steps {
+        sh 'make push'
       }
     }
     stage('Push Image') {
@@ -34,7 +50,7 @@ pipeline {
         }
       }
       steps {
-        sh 'make push GIT_BRANCH=' + env.BRANCH_NAME
+        sh 'make push'
       }
     }
     // The following stage doesn't actually re-deploy the marathon service, but actually kills the existing docker container
@@ -51,7 +67,7 @@ pipeline {
         }
       }
       steps {
-        sh 'docker rm -f $(docker ps --format "{{.ID}}:{{.Image}}" | grep registry.phx.connexta.com:5000/devops/eve-wallboard-testing | awk -F ":" \'{print $1}\')'
+        sh 'docker rm -f $(docker ps --format "{{.ID}}:{{.Image}}" | grep registry.phx.connexta.com:5000/devops/eve-wallboard | awk -F ":" \'{print $1}\')'
       }
     }
   }
@@ -59,7 +75,7 @@ pipeline {
     success {
       script {
         if (env.BRANCH_NAME == 'master') {
-          slackSend channel: '#cmp-build-bots', color: 'good', message: "Wallboard Build Successful! :jenkins-party: \nUpdated :docker: deployment available at registry.phx.connexta.com:5000/devops/eve-wallboard-testing:master Visit: ${RUN_DISPLAY_URL} and bask in the devops glory!"
+          slackSend channel: '#cmp-build-bots', color: 'good', message: "Wallboard Build Successful! :jenkins-party: \nUpdated :docker: deployment available at registry.phx.connexta.com:5000/devops/eve-wallboard:master Visit: ${RUN_DISPLAY_URL} and bask in the devops glory!"
         } else {
           slackSend channel: '#cmp-build-bots', color: 'good', message: "Awesome! '${JOB_NAME} [#${BUILD_NUMBER}]' built successfully :jenkins-party:"
         }
