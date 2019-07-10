@@ -88,7 +88,7 @@ ReactDOM.render(
         </LeftBox>
         <RightBox>
           {/* Right box content */}
-          <SlackComponent />
+          {/* <SlackComponent /> */}
         </RightBox>
       </ContentHorz>
     </MainGridVert>
